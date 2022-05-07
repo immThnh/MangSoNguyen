@@ -9,9 +9,12 @@ private:
     int* dulieu;
     int kichthuoc;
 public:
-    MangSoNguyen()
+
+    MangSoNguyen(){
+    }
+    MangSoNguyen(int kichthuoc)
     {
-        this -> dulieu 
+        this -> kichthuoc = kichthuoc;
     }
     friend istream& operator >> (istream& is, MangSoNguyen &msn)
     {
@@ -35,71 +38,61 @@ public:
         }
         return os;
     }
-
-    
-
-    MangSoNguyen& operator= (MangSoNguyen msn)
+    MangSoNguyen& operator= ( MangSoNguyen &msn)
     {
         this -> dulieu = new int[msn.kichthuoc];
         this -> kichthuoc = msn.kichthuoc;
-     
         for(int i = 0; i < this -> kichthuoc; i++)
         {
-            this -> dulieu[i] = msn.dulieu[i]; 
+            this -> dulieu[i] = msn.dulieu[i];
         }
         return *this;
     }
-    
     MangSoNguyen operator+ (MangSoNguyen &msn)
     {
-        int max = 0;
-        int min = 0;
-        if(msn.kichthuoc > this ->kichthuoc)
-        {
-            max = msn.kichthuoc;
-            min = this ->kichthuoc;
-        }
-        else {
-            max = this ->kichthuoc;
-            min = msn.kichthuoc;
-        }
+        int max1 = max(this -> kichthuoc, msn.kichthuoc);
+        int min1 = min (this -> kichthuoc, msn.kichthuoc);
         MangSoNguyen result;
-        result.dulieu = new int[max];
-        result.kichthuoc = max;
-        for(int i = 0; i < min; i++)
+        result.dulieu = new int[max1];
+        result.kichthuoc = max1;
+        for(int i = 0; i < min (this -> kichthuoc, msn.kichthuoc); i++)
         {
-            result.dulieu[i] = msn.dulieu[i] + (this -> dulieu[i]);
+            result.dulieu[i] = this -> dulieu[i] + msn.dulieu[i];
         }
-        for(int i = min; i <= max; i++)
+        for(int i = min(this -> kichthuoc, msn.kichthuoc); i < max (this -> kichthuoc, msn.kichthuoc); i++)
         {
-            if(max == msn.kichthuoc)
+            if(max1 == this -> kichthuoc)
+            {
+                result.dulieu[i] = this -> dulieu[i];
+            }
+            else 
             {
                 result.dulieu[i] = msn.dulieu[i];
             }
-            else result.dulieu[i] = this ->dulieu[i];
         }
         return result;
     }
-    // ++MSN
-    // MangSoNguyen& operator++()
-    // {
-    //     for(int i = 0; i < this -> kichthuoc; i++)
-    //     {
-    //         this -> dulieu[i] += 1;
-    //     }
-    //     return *this;
-    // }
     
-    //MSN++ 
-    // MangSoNguyen operator++ (int x)
-    // {
-    //     MangSoNguyen result(*this);
-    //       for(int i = 0; i < this -> kichthuoc; i++)
-    //     {
-    //         this -> dulieu[i] += 1;
-    //     }
-    //     return result;
-        
+    // hau to ++a;
+    MangSoNguyen& operator++ ()
+    {
+        for(int i = 0; i < this -> kichthuoc; i++)
+        {
+            this -> dulieu[i]++;
+        }
+        return *this;
     }
-    
+
+    // a ++
+    MangSoNguyen operator++ (int x)
+    {
+        MangSoNguyen result(this -> kichthuoc);
+        result = *this;
+        for(int i = 0; i < this -> kichthuoc; i++)
+        {
+           this -> dulieu[i] ++;
+        }
+        return result;
+    }
+
 };
